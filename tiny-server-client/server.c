@@ -26,7 +26,8 @@ int main(int argc, char* argv[])
 	coap_context_t*  ctx;
 	coap_address_t   serv_addr;
 	coap_resource_t* hello_resource;
-	fd_set           readfds;    
+	fd_set           readfds;
+
 	/* Prepare the CoAP server socket */ 
 	coap_address_init(&serv_addr);
 	serv_addr.addr.sin.sin_family      = AF_INET;
@@ -34,22 +35,25 @@ int main(int argc, char* argv[])
 	serv_addr.addr.sin.sin_port        = htons(5683); //default port
 	ctx                                = coap_new_context(&serv_addr);
 	if (!ctx) exit(EXIT_FAILURE);
+
 	/* Initialize the hello resource */
 	hello_resource = coap_resource_init((unsigned char *)"hello", 5, 0);
 	coap_register_handler(hello_resource, COAP_REQUEST_GET, hello_handler);
 	coap_add_resource(ctx, hello_resource);
+
 	/*Listen for incoming connections*/
-	while (1) {
+	while (1) 
+	{
 		FD_ZERO(&readfds);
-		FD_SET( ctx->sockfd, &readfds );
-		int result = select( FD_SETSIZE, &readfds, 0, 0, NULL );
-		if ( result < 0 ) /* socket error */
+		FD_SET(ctx->sockfd, &readfds );
+		int result = select(FD_SETSIZE, &readfds, 0, 0, NULL);
+		if (result < 0) /* socket error */
 		{
 			exit(EXIT_FAILURE);
 		} 
-		else if ( result > 0 && FD_ISSET( ctx->sockfd, &readfds )) /* socket read*/
+		else if (result > 0 && FD_ISSET(ctx->sockfd, &readfds)) /* socket read*/
 		{	 
-				coap_read( ctx );       
+			coap_read(ctx);
 		} 
 	}    
 }

@@ -16,7 +16,7 @@ message_handler(struct coap_context_t *ctx, const coap_endpoint_t *local_interfa
                 const coap_tid_t id) 
 {
 	unsigned char* data;
-	size_t         data_len;
+	size_t data_len;
 	if (COAP_RESPONSE_CLASS(received->hdr->code) == 2) 
 	{
 		if (coap_get_data(received, &data_len, &data))
@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
 	const char*       server_uri = "coap://127.0.0.1/hello";
 	
 	unsigned char     get_method = 1;
+	
 	/* Prepare coap socket*/
 	coap_address_init(&src_addr);
 	src_addr.addr.sin.sin_family      = AF_INET;
@@ -63,18 +64,20 @@ int main(int argc, char* argv[])
 	/* Set the handler and send the request */
 	coap_register_response_handler(ctx, message_handler);
 	coap_send_confirmed(ctx, ctx->endpoint, &dst_addr, request);
-	while(!data_received)
+
+	while (!data_received)
 	{
 		FD_ZERO(&readfds);
 		FD_SET( ctx->sockfd, &readfds );
-		int result = select( FD_SETSIZE, &readfds, 0, 0, NULL );
-		if ( result < 0 ) /* socket error */
+		int result = select(FD_SETSIZE, &readfds, 0, 0, NULL);
+
+		if (result <0 )
 		{
 			exit(EXIT_FAILURE);
 		} 
-		else if ( result > 0 && FD_ISSET( ctx->sockfd, &readfds )) /* socket read*/
+		else if (result > 0 && FD_ISSET(ctx->sockfd, &readfds))
 		{	 
-				coap_read( ctx );       
+			coap_read(ctx);
 		}
 	}
   return 0;

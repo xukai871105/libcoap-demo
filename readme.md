@@ -11,7 +11,7 @@
 * sudo make install
 
 # 示例
-## tiny-server
+## tiny-server-client
 
 ## simple-server
 CoAP Server示例 <br />

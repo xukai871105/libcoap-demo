@@ -1,13 +1,3 @@
-/* -*- Mode: C; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 * -*- */
-
-/* coap -- simple implementation of the Constrained Application Protocol (CoAP)
- *         as defined in RFC 7252
- *
- * Copyright (C) 2010--2016 Olaf Bergmann <bergmann@tzi.org>
- *
- * This file is part of the CoAP library libcoap. Please see README for terms
- * of use.
- */
 
 #include <string.h>
 #include <stdlib.h>
