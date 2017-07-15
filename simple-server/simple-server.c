@@ -38,7 +38,6 @@ static int quit = 0;
 
 /* changeable clock base (see handle_put_time()) */
 static time_t clock_offset;
-static time_t my_clock_base = 0;
 
 #ifdef __GNUC__
 #define UNUSED_PARAM __attribute__ ((unused))
@@ -164,7 +163,8 @@ get_context(const char *node, const char *port) {
 }
 
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
   coap_context_t  *ctx;
 
   fd_set readfds;
@@ -176,10 +176,9 @@ int main(int argc, char **argv) {
   char addr_str[NI_MAXHOST] = "::";
   char port_str[NI_MAXSERV] = "5683";
 
+  clock_offset = time(NULL);
 
   coap_log_t log_level = LOG_DEBUG;
-
-  clock_offset = time(NULL);
   coap_set_log_level(log_level);
   // coap_set_log_level(LOG_INFO);
 
