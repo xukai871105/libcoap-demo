@@ -12,7 +12,6 @@
   
 #define SERVER_PORT             38000 
 #define BUFFER_SIZE             1024 
-#define FILE_NAME_MAX_SIZE      512 
   
 int main() 
 { 
@@ -36,6 +35,7 @@ int main()
         exit(1); 
     } 
 
+    printf("Server Listen： %d\n", SERVER_PORT);
     while(1) 
     {  
         struct sockaddr_in client_addr; 
