@@ -26,13 +26,13 @@ int main()
     int server_socket_fd = socket(AF_INET, SOCK_DGRAM, 0); 
     if (server_socket_fd == -1) 
     { 
-        perror("Create Socket Failed:"); 
+        perror("Create Socket Failed！"); 
         exit(1); 
     } 
 
     if (-1 == (bind(server_socket_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)))) 
     { 
-        perror("Server Bind Failed:"); 
+        perror("Server Bind Failed！"); 
         exit(1); 
     } 
 
@@ -46,10 +46,11 @@ int main()
 
         if (recvfrom(server_socket_fd, buffer, BUFFER_SIZE, 0, (struct sockaddr*)&client_addr, &client_addr_length) == -1) 
         { 
-            perror("Receive Data Failed:"); 
+            perror("Receive Data Failed！"); 
             exit(1); 
         } 
 
+        printf("(%s , %d) Said : ", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
         printf("%s\n", buffer); 
     } 
 
