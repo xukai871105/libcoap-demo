@@ -163,8 +163,8 @@ int main(int argc, char **argv)
   coap_tick_t now;
   coap_queue_t *nextpdu;
 
-  char addr_str[NI_MAXHOST] = "::";
-  char port_str[NI_MAXSERV] = "5683";
+  char addr_str[32] = "::";
+  char port_str[32] = "5683";
 
   clock_offset = time(NULL);
 
@@ -172,8 +172,6 @@ int main(int argc, char **argv)
   coap_set_log_level(log_level);
   // coap_set_log_level(LOG_INFO);
 
-  // strncpy(addr_str, "127.0.0.1", NI_MAXHOST-1);
-  // strncpy(port_str, "5683", NI_MAXSERV-1);
   ctx = get_context(addr_str, port_str);
   if (!ctx)
     return -1;
@@ -182,11 +180,11 @@ int main(int argc, char **argv)
 
   signal(SIGINT, handle_sigint);
 
-  while ( !quit ) {
+  while (!quit) {
     FD_ZERO(&readfds);
-    FD_SET( ctx->sockfd, &readfds );
+    FD_SET(ctx->sockfd, &readfds);
 
-    nextpdu = coap_peek_next( ctx );
+    nextpdu = coap_peek_next(ctx);
 
     coap_ticks(&now);
     while (nextpdu && nextpdu->t <= now - ctx->sendqueue_basetime) {
@@ -204,18 +202,17 @@ int main(int argc, char **argv)
       tv.tv_sec = COAP_RESOURCE_CHECK_TIME;
       timeout = &tv;
     }
-    result = select( FD_SETSIZE, &readfds, 0, 0, timeout );
+    result = select(FD_SETSIZE, &readfds, 0, 0, timeout);
 
-    if ( result < 0 ) {         /* error */
+    if (result < 0) {           /* error */
       if (errno != EINTR)
         perror("select");
-    } else if ( result > 0 ) {  /* read from socket */
-      if ( FD_ISSET( ctx->sockfd, &readfds ) ) {
+    } else if (result > 0) {  /* read from socket */
+      if (FD_ISSET(ctx->sockfd, &readfds)) {
         coap_read( ctx );       /* read received data */
         /* coap_dispatch( ctx );  /\* and dispatch PDUs from receivequeue *\/ */
       }
     }
-
   }
 
   coap_free_context(ctx);
