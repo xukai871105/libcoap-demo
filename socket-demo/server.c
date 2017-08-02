@@ -72,20 +72,27 @@ main(int argc, char *argv[])
         if (nread == -1)
             continue;               /* Ignore failed request */
 
+        sleep(1);
         char host[NI_MAXHOST], service[NI_MAXSERV];
 
         s = getnameinfo((struct sockaddr *) &peer_addr,
                         peer_addr_len, host, NI_MAXHOST,
                         service, NI_MAXSERV, NI_NUMERICSERV);
-        if (s == 0)
+        if (s == 0) {
             printf("Received %ld bytes from %s:%s\n",
                    (long) nread, host, service);
-        else
+            buf[nread] = '\0';
+            printf("%s\n", buf);
+        }
+        else {
             fprintf(stderr, "getnameinfo: %s\n", gai_strerror(s));
+        }
 
         if (sendto(sfd, buf, nread, 0,
                    (struct sockaddr *) &peer_addr,
-                   peer_addr_len) != nread)
+                   peer_addr_len) != nread) {
             fprintf(stderr, "Error sending response\n");
+        }
+            
     }
 }
