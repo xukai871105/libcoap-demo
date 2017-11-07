@@ -3,12 +3,14 @@
 **作者** 徐凯 <br/>
 
 # libcoap安装概述
-* git clone https://github.com/obgm/libcoap.git
-* cd libcoap
-* autogen.sh
-* ./configure --disable-documentation
-* make
-* sudo make install
+```
+git clone https://github.com/obgm/libcoap.git
+cd libcoap
+autogen.sh
+./configure --disable-documentation
+make
+sudo make install
+```
 
 # 示例
 ## tiny-server-client
